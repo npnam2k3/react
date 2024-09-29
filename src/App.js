@@ -1,28 +1,16 @@
 import logo from "./logo.svg";
-import "./App.css";
+import "./App.scss";
 import { useDispatch, useSelector } from "react-redux";
 import { increaseCounter, decreaseCounter } from "./redux/action/counterAction";
 import MyComponent from "./components/MyComponent";
 import React from "react";
-import UserInfor from "./components/UserInfor";
-import DisplayInfor from "./components/DisplayInfor";
 
 class App extends React.Component {
-  state = {
-    listUser: [
-      { id: 1, name: "devil", age: 15 },
-      { id: 2, name: "Phuong Nam", age: 21 },
-      { id: 3, name: "nam nguyen", age: 22 },
-    ],
-  };
   render() {
     return (
-      <>
+      <div className="app-container">
         <MyComponent></MyComponent>
-        <UserInfor />
-        {/* <DisplayInfor name="Admin" age={21} /> */}
-        <DisplayInfor listUser={this.state.listUser} />
-      </>
+      </div>
     );
   }
 }
