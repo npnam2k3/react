@@ -4,35 +4,24 @@ import { useDispatch, useSelector } from "react-redux";
 import { increaseCounter, decreaseCounter } from "./redux/action/counterAction";
 import MyComponent from "./components/MyComponent";
 import React from "react";
+import UserInfor from "./components/UserInfor";
+import DisplayInfor from "./components/DisplayInfor";
 
 class App extends React.Component {
   state = {
-    name: "nam",
-    age: 21,
-    address: "HN",
-  };
-  handleChange(e) {
-    this.setState({
-      name: e.target.value,
-    });
-  }
-  handleOnSubmit = (e) => {
-    e.preventDefault();
-    console.log(this.state);
+    listUser: [
+      { id: 1, name: "devil", age: 20 },
+      { id: 2, name: "Phuong Nam", age: 21 },
+      { id: 3, name: "nam nguyen", age: 22 },
+    ],
   };
   render() {
     return (
       <>
         <MyComponent></MyComponent>
-        Name: {this.state.name} and Age: {this.state.age}
-        <form onSubmit={(e) => this.handleOnSubmit(e)}>
-          <input
-            type="text"
-            onChange={(e) => {
-              this.handleChange(e);
-            }}
-          />
-        </form>
+        <UserInfor />
+        {/* <DisplayInfor name="Admin" age={21} /> */}
+        <DisplayInfor listUser={this.state.listUser} />
       </>
     );
   }
