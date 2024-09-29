@@ -1,54 +1,45 @@
-import React from "react";
-class AddUserInfor extends React.Component {
-  state = {
-    name: "",
-    age: "",
-    address: "HN",
-  };
-  handleChangeName(e) {
-    this.setState({
-      name: e.target.value,
-    });
-  }
-  handleChangeAge(e) {
-    this.setState({
-      age: e.target.value,
-    });
-  }
-  handleOnSubmit = (e) => {
-    e.preventDefault();
-    this.props.handleAddNewUser({
-      id: Math.floor(Math.random() * 100 + 1) + "-random",
-      name: this.state.name,
-      age: this.state.age,
-    });
-  };
-  render() {
-    return (
-      <div>
-        Name: {this.state.name} and Age: {this.state.age}
-        <form onSubmit={(e) => this.handleOnSubmit(e)}>
-          <label>Your name: </label>
-          <input
-            value={this.state.name}
-            type="text"
-            onChange={(e) => {
-              this.handleChangeName(e);
-            }}
-          />
-          <label>Your age: </label>
-          <input
-            value={this.state.age}
-            type="text"
-            onChange={(e) => {
-              this.handleChangeAge(e);
-            }}
-          />
-          <button>Submit</button>
-        </form>
-      </div>
-    );
-  }
-}
+import React, { useState } from "react";
 
+const AddUserInfor = (props) => {
+  const [name, setName] = useState("");
+  const [age, setAge] = useState("");
+  const handleChangeName = (e) => {
+    setName(e.target.value);
+  };
+  const handleChangeAge = (e) => {
+    setAge(e.target.value);
+  };
+  const handleOnSubmit = (e) => {
+    e.preventDefault();
+    props.handleAddNewUser({
+      id: Math.floor(Math.random() * 100 + 1) + "-random",
+      name: name,
+      age: age,
+    });
+  };
+  return (
+    <div>
+      Name: {name} and Age: {age}
+      <form onSubmit={(e) => handleOnSubmit(e)}>
+        <label>Your name: </label>
+        <input
+          value={name}
+          type="text"
+          onChange={(e) => {
+            handleChangeName(e);
+          }}
+        />
+        <label>Your age: </label>
+        <input
+          value={age}
+          type="text"
+          onChange={(e) => {
+            handleChangeAge(e);
+          }}
+        />
+        <button>Submit</button>
+      </form>
+    </div>
+  );
+};
 export default AddUserInfor;
