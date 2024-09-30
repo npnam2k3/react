@@ -17,7 +17,11 @@ import {
   FaRegLaughWink,
   FaHeart,
 } from "react-icons/fa";
+
+import { DiReact } from "react-icons/di";
 import sidebarBg from "../../assets/bg2.jpg";
+import { GenIcon } from "react-icons";
+import "./SideBar.scss";
 
 const SideBar = (props) => {
   const { image, collapsed, toggled, handleToggleSidebar } = props;
@@ -43,28 +47,20 @@ const SideBar = (props) => {
               whiteSpace: "nowrap",
             }}
           >
-            Nam Nguyen
+            <DiReact size={"3em"} color="00bfff" />
+            <span style={{ marginLeft: "15px" }}>Nam Nguyen</span>
           </div>
         </SidebarHeader>
 
         <SidebarContent>
           <Menu iconShape="circle">
-            <MenuItem
-              icon={<FaTachometerAlt />}
-              suffix={<span className="badge red">New</span>}
-            >
-              Dashboard
-            </MenuItem>
-            <MenuItem icon={<FaGem />}> Components </MenuItem>
+            <MenuItem icon={<FaTachometerAlt />}>Dashboard</MenuItem>
           </Menu>
           <Menu iconShape="circle">
-            <SubMenu
-              suffix={<span className="badge yellow">3</span>}
-              icon={<FaRegLaughWink />}
-            >
-              <MenuItem> 1</MenuItem>
-              <MenuItem> 2</MenuItem>
-              <MenuItem> 3</MenuItem>
+            <SubMenu icon={<FaGem />} title={"Features"}>
+              <MenuItem> Quản lý users</MenuItem>
+              <MenuItem> Quản lý bài Quiz</MenuItem>
+              <MenuItem> Quản lý câu hỏi</MenuItem>
             </SubMenu>
           </Menu>
         </SidebarContent>
@@ -77,12 +73,11 @@ const SideBar = (props) => {
             }}
           >
             <a
-              href="https://github.com/azouaoui-med/react-pro-sidebar"
+              href="https://haryphamdev.github.io/hoidanit-udemy/"
               target="_blank"
               className="sidebar-btn"
               rel="noopener noreferrer"
             >
-              <FaGithub />
               <span
                 style={{
                   whiteSpace: "nowrap",
@@ -90,7 +85,7 @@ const SideBar = (props) => {
                   overflow: "hidden",
                 }}
               >
-                viewSource
+                &#169; Hỏi Dân IT Udemy
               </span>
             </a>
           </div>
