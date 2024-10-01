@@ -2,11 +2,21 @@ import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { FcPlus } from "react-icons/fc";
+import axios from "axios";
 
-const ModalCreateUser = () => {
-  const [show, setShow] = useState(false);
+const ModalCreateUser = (props) => {
+  const { show, setShow } = props;
+  //   const [show, setShow] = useState(showModel);
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    setEmail("");
+    setPassword("");
+    setRole("USER");
+    setUsername("");
+    setImage("");
+    setPreviewImage("");
+  };
   const handleShow = () => setShow(true);
 
   const [email, setEmail] = useState("");
@@ -23,12 +33,31 @@ const ModalCreateUser = () => {
     }
     // console.log(e.target?.files[0]?.name);
   };
+  const handleSubmitCreateUser = async () => {
+    // validate input
+
+    // call api
+
+    // khi truyền kèm theo file thì bắt buộc phải truyền bằng form data
+    const data = new FormData();
+    data.append("email", email);
+    data.append("username", username);
+    data.append("password", password);
+    data.append("role", role);
+    data.append("userImage", image);
+
+    let response = await axios.post(
+      "http://localhost:8081/api/v1/participant",
+      data
+    );
+    console.log(">>>> Check response: ", response);
+  };
 
   return (
     <>
-      <Button variant="primary" onClick={handleShow}>
+      {/* <Button variant="primary" onClick={handleShow}>
         Add new user
-      </Button>
+      </Button> */}
 
       <Modal
         show={show}
@@ -117,7 +146,7 @@ const ModalCreateUser = () => {
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" onClick={(e) => handleSubmitCreateUser(e)}>
             Save
           </Button>
         </Modal.Footer>
