@@ -22,6 +22,7 @@ import { DiReact } from "react-icons/di";
 import sidebarBg from "../../assets/bg2.jpg";
 import { GenIcon } from "react-icons";
 import "./SideBar.scss";
+import { Link } from "react-router-dom";
 
 const SideBar = (props) => {
   const { image, collapsed, toggled, handleToggleSidebar } = props;
@@ -54,13 +55,25 @@ const SideBar = (props) => {
 
         <SidebarContent>
           <Menu iconShape="circle">
-            <MenuItem icon={<FaTachometerAlt />}>Dashboard</MenuItem>
+            <MenuItem icon={<FaTachometerAlt />}>
+              Dashboard
+              <Link to="/admin" />
+            </MenuItem>
           </Menu>
           <Menu iconShape="circle">
             <SubMenu icon={<FaGem />} title={"Features"}>
-              <MenuItem> Quản lý users</MenuItem>
-              <MenuItem> Quản lý bài Quiz</MenuItem>
-              <MenuItem> Quản lý câu hỏi</MenuItem>
+              <MenuItem>
+                Quản lý users
+                <Link to="/admin/manage-users" />
+              </MenuItem>
+              <MenuItem>
+                Quản lý bài Quiz
+                <Link to="/admin/manage-quizs" />
+              </MenuItem>
+              <MenuItem>
+                Quản lý câu hỏi
+                <Link to="/admin/manage-questions" />
+              </MenuItem>
             </SubMenu>
           </Menu>
         </SidebarContent>
