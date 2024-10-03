@@ -1,7 +1,8 @@
 import { useState } from "react";
 const TableUser = (props) => {
   const { listUsers } = props;
-  const { handleClickBtnView, handleClickBtnUpdate } = props;
+  const { handleClickBtnView, handleClickBtnUpdate, handleClickBtnDelete } =
+    props;
   return (
     <>
       <table className="table table-hover table-bordered">
@@ -36,7 +37,12 @@ const TableUser = (props) => {
                     >
                       Update
                     </button>
-                    <button className="btn btn-danger">Delete</button>
+                    <button
+                      className="btn btn-danger"
+                      onClick={() => handleClickBtnDelete(user)}
+                    >
+                      Delete
+                    </button>
                   </td>
                 </tr>
               );
