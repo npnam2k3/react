@@ -1,7 +1,7 @@
 import { useState } from "react";
 const TableUser = (props) => {
   const { listUsers } = props;
-  const { handleClickBtnUpdate } = props;
+  const { handleClickBtnView, handleClickBtnUpdate } = props;
   return (
     <>
       <table className="table table-hover table-bordered">
@@ -24,7 +24,12 @@ const TableUser = (props) => {
                   <td>{user.email}</td>
                   <td>{user.role}</td>
                   <td>
-                    <button className="btn btn-info">View</button>
+                    <button
+                      className="btn btn-info"
+                      onClick={() => handleClickBtnView(user)}
+                    >
+                      View
+                    </button>
                     <button
                       className="btn btn-warning mx-3"
                       onClick={() => handleClickBtnUpdate(user)}
