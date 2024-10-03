@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { postCreateNewUser } from "../../../services/apiServices";
 
 const ModalCreateUser = (props) => {
-  const { show, setShow } = props;
+  const { show, setShow, fetchListUser } = props;
   //   const [show, setShow] = useState(showModel);
 
   const handleClose = () => {
@@ -59,6 +59,7 @@ const ModalCreateUser = (props) => {
     if (data?.EC === 0) {
       toast.success(data.EM);
       handleClose();
+      await fetchListUser();
     }
     if (data?.EC !== 0) {
       toast.error(data.EM);
