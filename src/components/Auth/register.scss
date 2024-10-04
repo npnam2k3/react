@@ -1,0 +1,61 @@
+.regis-container {
+  .header {
+    text-align: right;
+    margin-top: 8px;
+    padding: 0 100px;
+    .regis-btn {
+      border: none;
+      border-radius: 5px;
+      padding: 5px 10px;
+      transition: 0.5s;
+      margin: 0 10px;
+      background-color: #79acac;
+      color: #fffbfb;
+      &:hover {
+        background-color: rgb(65, 188, 179);
+      }
+    }
+  }
+  .title {
+    font-size: 2rem;
+    font-weight: 600;
+  }
+
+  .content-form {
+    width: 400px;
+    .password {
+      position: relative;
+      .icon-eye {
+        position: absolute;
+        top: 40px;
+        right: 10px;
+        cursor: pointer;
+      }
+    }
+    .form-group {
+      margin: 20px 0;
+      label {
+        margin-bottom: 5px;
+      }
+    }
+    .regis-btn {
+      width: 100%;
+      border: none;
+      border-radius: 5px;
+      padding: 10px 15px;
+      transition: 0.5s;
+      margin-bottom: 10px;
+      &:hover {
+        background-color: aqua;
+      }
+    }
+    .back {
+      span {
+        cursor: pointer;
+        &:hover {
+          color: rgb(65, 188, 179);
+        }
+      }
+    }
+  }
+}
