@@ -13,6 +13,7 @@ import ManageUser from "./components/Admin/Content/ManageUser";
 import DashBoard from "./components/Admin/Content/DashBoard";
 import ManageQuiz from "./components/Admin/Content/ManageQuiz";
 import ManageQuestions from "./components/Admin/Content/ManageQuestions";
+import Login from "./components/Auth/Login";
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <Provider store={store}>
@@ -29,6 +30,7 @@ root.render(
           <Route path="manage-questions" element={<ManageQuestions />} />
           <Route path="manage-quizs" element={<ManageQuiz />} />
         </Route>
+        <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
     {/* </React.StrictMode> */}
