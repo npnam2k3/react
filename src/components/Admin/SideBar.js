@@ -22,10 +22,11 @@ import { DiReact } from "react-icons/di";
 import sidebarBg from "../../assets/bg2.jpg";
 import { GenIcon } from "react-icons";
 import "./SideBar.scss";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SideBar = (props) => {
   const { image, collapsed, toggled, handleToggleSidebar } = props;
+  const navigate = useNavigate();
   return (
     <>
       <ProSidebar
@@ -49,7 +50,12 @@ const SideBar = (props) => {
             }}
           >
             <DiReact size={"3em"} color="00bfff" />
-            <span style={{ marginLeft: "15px" }}>Nam Nguyen</span>
+            <span
+              style={{ marginLeft: "15px", cursor: "pointer" }}
+              onClick={() => navigate("/")}
+            >
+              Nam Nguyen
+            </span>
           </div>
         </SidebarHeader>
 
@@ -68,7 +74,7 @@ const SideBar = (props) => {
               </MenuItem>
               <MenuItem>
                 Quản lý bài Quiz
-                <Link to="/admin/manage-quizs" />
+                <Link to="/admin/manage-quizzes" />
               </MenuItem>
               <MenuItem>
                 Quản lý câu hỏi

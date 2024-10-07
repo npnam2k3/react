@@ -5,8 +5,8 @@ import Admin from "./components/Admin/Admin";
 import HomePage from "./components/Home/HomePage";
 import ManageUser from "./components/Admin/Content/ManageUser";
 import DashBoard from "./components/Admin/Content/DashBoard";
-import ManageQuiz from "./components/Admin/Content/ManageQuiz";
-import ManageQuestions from "./components/Admin/Content/ManageQuestions";
+import ManageQuiz from "./components/Admin/Content/Quiz/ManageQuiz";
+import ManageQuestions from "./components/Admin/Content/Quiz/ManageQuestions";
 import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
 import { Routes, Route } from "react-router-dom";
@@ -35,7 +35,7 @@ const Layout = (props) => {
           <Route index element={<DashBoard />} />
           <Route path="manage-users" element={<ManageUser />} />
           <Route path="manage-questions" element={<ManageQuestions />} />
-          <Route path="manage-quizs" element={<ManageQuiz />} />
+          <Route path="manage-quizzes" element={<ManageQuiz />} />
         </Route>
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
