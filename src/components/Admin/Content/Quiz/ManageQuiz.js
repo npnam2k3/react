@@ -3,6 +3,8 @@ import "./manageQuiz.scss";
 import Select from "react-select";
 import { postCreateNewQuiz } from "../../../../services/apiServices";
 import { toast } from "react-toastify";
+import TableQuiz from "./TableQuiz";
+import Accordion from "react-bootstrap/Accordion";
 
 const options = [
   { value: "EASY", label: "EASY" },
@@ -43,60 +45,70 @@ const ManageQuiz = (props) => {
 
   return (
     <div className="quiz-container">
-      <div className="title">Manage Quizzes</div>
-      <hr />
-      <div className="add-new">
-        <fieldset className="border rounded-3 p-3">
-          <legend className="float-none w-auto px-3">Add new quiz</legend>
-          <div className="form-floating mb-3">
-            <input
-              type="text"
-              className="form-control"
-              placeholder=""
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <label>Name: </label>
-          </div>
-          <div className="form-floating">
-            <input
-              type="text"
-              className="form-control"
-              placeholder=""
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-            />
-            <label>Description: </label>
-          </div>
-          <div className="my-3">
-            <Select
-              options={options}
-              placeholder={"Quiz type ..."}
-              value={type}
-              defaultValue={type}
-              onChange={setType}
-            />
-          </div>
-          <div className="more-action">
-            <label className="mb-2">Upload Image</label>
-            <input
-              type="file"
-              className="form-control"
-              id="imageFile"
-              onChange={(e) => handleChangeFile(e)}
-            />
-          </div>
-          <div className="mt-3">
-            <button
-              className="btn btn-warning"
-              onClick={() => handleSubmitQuiz()}
-            >
-              Save
-            </button>
-          </div>
-        </fieldset>
+      <Accordion defaultActiveKey="0">
+        <Accordion.Item eventKey="0">
+          <Accordion.Header>
+            <div className="title">Manage Quizzes</div>
+          </Accordion.Header>
+          <Accordion.Body>
+            <div className="add-new">
+              <fieldset className="border rounded-3 p-3">
+                <legend className="float-none w-auto px-3">Add new quiz</legend>
+                <div className="form-floating mb-3">
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder=""
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                  <label>Name: </label>
+                </div>
+                <div className="form-floating">
+                  <input
+                    type="text"
+                    className="form-control"
+                    placeholder=""
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                  />
+                  <label>Description: </label>
+                </div>
+                <div className="my-3">
+                  <Select
+                    options={options}
+                    placeholder={"Quiz type ..."}
+                    value={type}
+                    defaultValue={type}
+                    onChange={setType}
+                  />
+                </div>
+                <div className="more-action">
+                  <label className="mb-2">Upload Image</label>
+                  <input
+                    type="file"
+                    className="form-control"
+                    id="imageFile"
+                    onChange={(e) => handleChangeFile(e)}
+                  />
+                </div>
+                <div className="mt-3">
+                  <button
+                    className="btn btn-warning"
+                    onClick={() => handleSubmitQuiz()}
+                  >
+                    Save
+                  </button>
+                </div>
+              </fieldset>
+            </div>
+          </Accordion.Body>
+        </Accordion.Item>
+      </Accordion>
+
+      <div className="list-detail">
+        <TableQuiz />
       </div>
-      <div className="list-detail">Table</div>
     </div>
   );
 };
