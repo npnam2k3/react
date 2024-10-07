@@ -20,6 +20,29 @@ const DetailQuiz = (props) => {
       setIndex(index + 1);
     }
   };
+  const handleClickFinish = () => {};
+  const handleCheckbox = (answerId, questionId) => {
+    let dataQuizClone = _.cloneDeep(dataQuiz);
+    let question = dataQuizClone.find(
+      (item) => +item.questionId === +questionId
+    );
+    if (question && question.answers) {
+      let questionUpdate = question.answers.map((answer) => {
+        if (+answer.id === answerId) {
+          answer.isSelected = !answer.isSelected;
+        }
+        return answer;
+      });
+      question.answers = questionUpdate;
+    }
+    let index = dataQuizClone.findIndex(
+      (item) => +item.questionId === +questionId
+    );
+    if (index > -1) {
+      dataQuizClone[index] = question;
+      setDataQuiz(dataQuizClone);
+    }
+  };
 
   useEffect(() => {
     fetchQuestions();
@@ -42,6 +65,7 @@ const DetailQuiz = (props) => {
               questionDescription = item.description;
               image = item.image;
             }
+            item.answers.isSelected = false;
             answers.push(item.answers);
             // console.log("Item answers: ", item.answers);
           });
@@ -53,7 +77,6 @@ const DetailQuiz = (props) => {
       setDataQuiz(data);
     }
   };
-  console.log("Check data quiz: ", dataQuiz);
   return (
     <div className="detail-quiz-container">
       <div className="left-content">
@@ -65,6 +88,7 @@ const DetailQuiz = (props) => {
         <div className="q-content">
           <Question
             index={index}
+            handleCheckbox={handleCheckbox}
             data={dataQuiz && dataQuiz.length > 0 ? dataQuiz[index] : []}
           />
         </div>
@@ -77,6 +101,12 @@ const DetailQuiz = (props) => {
           </button>
           <button className="btn btn-primary" onClick={() => handleClickNext()}>
             Next
+          </button>
+          <button
+            className="btn btn-warning"
+            onClick={() => handleClickFinish()}
+          >
+            Finish
           </button>
         </div>
       </div>
