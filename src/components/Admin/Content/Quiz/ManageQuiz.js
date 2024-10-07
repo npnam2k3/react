@@ -1,6 +1,8 @@
 import { useState } from "react";
 import "./manageQuiz.scss";
 import Select from "react-select";
+import { postCreateNewQuiz } from "../../../../services/apiServices";
+import { toast } from "react-toastify";
 
 const options = [
   { value: "EASY", label: "EASY" },
@@ -11,9 +13,33 @@ const ManageQuiz = (props) => {
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [image, setImage] = useState("");
-  const [type, setType] = useState("EASY");
+  const [type, setType] = useState(null);
 
-  const handleChangeFile = (e) => {};
+  const handleChangeFile = (e) => {
+    if (e.target && e.target.files && e.target.files[0]) {
+      setImage(e.target.files[0]);
+    }
+  };
+
+  const handleSubmitQuiz = async () => {
+    // validate
+    if (!name || !description) {
+      toast.error("Name/ description is required");
+      return;
+    }
+    let res = await postCreateNewQuiz(description, name, type?.value, image);
+    if (res && res.EC === 0) {
+      toast.success(res.EM);
+      setDescription("");
+      setName("");
+      setImage(null);
+      setType("");
+      let imageValue = document.getElementById("imageFile");
+      imageValue.value = "";
+    } else {
+      toast.error(res?.EM);
+    }
+  };
 
   return (
     <div className="quiz-container">
@@ -47,6 +73,8 @@ const ManageQuiz = (props) => {
               options={options}
               placeholder={"Quiz type ..."}
               value={type}
+              defaultValue={type}
+              onChange={setType}
             />
           </div>
           <div className="more-action">
@@ -54,8 +82,17 @@ const ManageQuiz = (props) => {
             <input
               type="file"
               className="form-control"
+              id="imageFile"
               onChange={(e) => handleChangeFile(e)}
             />
+          </div>
+          <div className="mt-3">
+            <button
+              className="btn btn-warning"
+              onClick={() => handleSubmitQuiz()}
+            >
+              Save
+            </button>
           </div>
         </fieldset>
       </div>
