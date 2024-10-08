@@ -16,13 +16,13 @@ const ManageQuestions = (props) => {
   const [questions, setQuestions] = useState([
     {
       id: uuidv4(),
-      description: "Question 1",
+      description: "",
       imageFile: "",
       imageName: "",
       answers: [
         {
           id: uuidv4(),
-          description: "Answer 1",
+          description: "",
           isCorrect: false,
         },
       ],
@@ -76,6 +76,45 @@ const ManageQuestions = (props) => {
       setQuestions(questionsClone);
     }
   };
+
+  const handleOnChange = (type, questionId, value) => {
+    let questionsClone = _.cloneDeep(questions);
+    if (type === "QUESTION") {
+      let index = questionsClone.findIndex((item) => item.id === questionId);
+      if (index > -1) {
+        questionsClone[index].description = value;
+        setQuestions(questionsClone);
+      }
+    }
+  };
+  const handleOnChangeFileQuestion = (questionId, e) => {
+    let questionsClone = _.cloneDeep(questions);
+    let index = questionsClone.findIndex((item) => item.id === questionId);
+    if (index > -1 && e.target && e.target.files && e.target.files[0]) {
+      questionsClone[index].imageFile = e.target.files[0];
+      questionsClone[index].imageName = e.target.files[0].name;
+      setQuestions(questionsClone);
+    }
+  };
+  const handleAnswerQuestion = (type, answerId, questionId, value) => {
+    let questionsClone = _.cloneDeep(questions);
+    let index = questionsClone.findIndex((item) => item.id === questionId);
+    if (index > -1) {
+      questionsClone[index].answers = questionsClone[index].answers.map(answer => {
+          if(answer.id === answerId){
+            if(type === 'INPUT'){
+
+              answer.description = value
+            }
+            if(type === 'CHECKBOX'){
+              answer.isCorrect = value
+            }
+          }
+          return answer
+      })
+      setQuestions(questionsClone);
+    }
+  };
   return (
     <div className="questions-container">
       <div className="title">Manage Questions</div>
@@ -102,15 +141,29 @@ const ManageQuestions = (props) => {
                       className="form-control"
                       placeholder=""
                       value={question.description}
+                      onChange={(e) =>
+                        handleOnChange("QUESTION", question.id, e.target.value)
+                      }
                     />
                     <label>Question{index + 1}'s description</label>
                   </div>
                   <div className="group-upload">
-                    <label>
+                    <label htmlFor={`${question.id}`}>
                       <RiImageAddFill className="label-upload" />
                     </label>
-                    <input type="file" hidden />
-                    <span>0 file is uploaded</span>
+                    <input
+                      id={`${question.id}`}
+                      type="file"
+                      hidden
+                      onChange={(e) =>
+                        handleOnChangeFileQuestion(question.id, e)
+                      }
+                    />
+                    <span>
+                      {question?.imageName
+                        ? question.imageName
+                        : "0 file is uploaded"}
+                    </span>
                   </div>
                   <div className="btn-add">
                     <span onClick={() => handleAddRemoveQuestion("ADD")}>
@@ -135,6 +188,15 @@ const ManageQuestions = (props) => {
                         <input
                           className="form-check-input iscorrect"
                           type="checkbox"
+                          checked={answer.isCorrect}
+                          onChange={(e) =>
+                            handleAnswerQuestion(
+                              "CHECKBOX",
+                              answer.id,
+                              question.id,
+                              e.target.checked
+                            )
+                          }
                         />
                         <div className="form-floating answer-name">
                           <input
@@ -142,6 +204,14 @@ const ManageQuestions = (props) => {
                             className="form-control"
                             placeholder=""
                             value={answer.description}
+                            onChange={(e) =>
+                              handleAnswerQuestion(
+                                "INPUT",
+                                answer.id,
+                                question.id,
+                                e.target.value
+                              )
+                            }
                           />
                           <label>Answer {index + 1}</label>
                         </div>
@@ -173,6 +243,12 @@ const ManageQuestions = (props) => {
               </div>
             );
           })}
+          {
+            questions && questions.length>0 &&
+            <div>
+              <button className="btn btn-warning">Save Questions</button>
+            </div>
+          }
       </div>
     </div>
   );
