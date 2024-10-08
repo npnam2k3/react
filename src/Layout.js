@@ -6,7 +6,7 @@ import HomePage from "./components/Home/HomePage";
 import ManageUser from "./components/Admin/Content/ManageUser";
 import DashBoard from "./components/Admin/Content/DashBoard";
 import ManageQuiz from "./components/Admin/Content/Quiz/ManageQuiz";
-import ManageQuestions from "./components/Admin/Content/Quiz/ManageQuestions";
+import ManageQuestions from "./components/Admin/Content/Question/ManageQuestions";
 import Login from "./components/Auth/Login";
 import Register from "./components/Auth/Register";
 import { Routes, Route } from "react-router-dom";
