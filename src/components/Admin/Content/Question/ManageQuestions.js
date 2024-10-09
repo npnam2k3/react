@@ -11,10 +11,11 @@ import {
   postCreateNewQuestionForQuiz,
   postCreateNewAnswerForQuestion,
 } from "../../../../services/apiServices";
+import { toast } from "react-toastify";
 
 const ManageQuestions = (props) => {
   const [selectedQuiz, setSelectedQuiz] = useState({});
-  const [questions, setQuestions] = useState([
+  const initQuestion = [
     {
       id: uuidv4(),
       description: "",
@@ -28,7 +29,8 @@ const ManageQuestions = (props) => {
         },
       ],
     },
-  ]);
+  ];
+  const [questions, setQuestions] = useState(initQuestion);
   const [isPreviewImage, setIsPreviewImage] = useState(false);
   const [dataPreviewImage, setDataPreviewImage] = useState({
     title: "",
@@ -140,28 +142,88 @@ const ManageQuestions = (props) => {
   };
   const handleSubmitQuestionForQuiz = async () => {
     //validate questions/ answers
+    if (_.isEmpty(selectedQuiz)) {
+      toast.error("Please choose a Quiz!");
+      return;
+    }
+
+    // validate question
+    let isValidQuestion = true;
+    let indexQ = 0;
+    for (let i = 0; i < questions.length; i++) {
+      if (!questions[i].description) {
+        isValidQuestion = false;
+        indexQ = i;
+        break;
+      }
+    }
+    if (!isValidQuestion) {
+      toast.error(`Not empty Question ${indexQ + 1}`);
+      return;
+    }
+
+    // validate answer
+    let isValidAnswer = true;
+    let indexQuestion = 0,
+      indexAnswer = 0;
+    for (let i = 0; i < questions.length; i++) {
+      for (let j = 0; j < questions[i].answers.length; j++) {
+        if (!questions[i].answers[j].description) {
+          isValidAnswer = false;
+          indexAnswer = j;
+          break;
+        }
+      }
+      indexQuestion = i;
+      if (!isValidAnswer) break;
+    }
+    if (!isValidAnswer) {
+      toast.error(
+        `Not empty Question: ${indexQuestion + 1} 
+        - Answers: ${indexAnswer + 1}`
+      );
+      return;
+    }
 
     // submit questions
-    await Promise.all(
-      questions.map(async (question) => {
-        const q = await postCreateNewQuestionForQuiz(
-          +selectedQuiz.value,
-          question.description,
-          question.imageFile
+
+    // Khi dung voi Promise.all se chay song song va khong theo thu tu
+    // await Promise.all(
+    //   questions.map(async (question) => {
+    //     const q = await postCreateNewQuestionForQuiz(
+    //       +selectedQuiz.value,
+    //       question.description,
+    //       question.imageFile
+    //     );
+    //     //submit answers
+    //     await Promise.all(
+    //       question.answers.map(async (answer) => {
+    //         await postCreateNewAnswerForQuestion(
+    //           answer.description,
+    //           answer.isCorrect,
+    //           q.DT.id
+    //         );
+    //       })
+    //     );
+    //   })
+    // );
+    for (const question of questions) {
+      const q = await postCreateNewQuestionForQuiz(
+        +selectedQuiz.value,
+        question.description,
+        question.imageFile
+      );
+      // submit answers
+      for (const answer of question.answers) {
+        await postCreateNewAnswerForQuestion(
+          answer.description,
+          answer.isCorrect,
+          q.DT.id
         );
-        //submit answers
-        await Promise.all(
-          question.answers.map(async (answer) => {
-            await postCreateNewAnswerForQuestion(
-              answer.description,
-              answer.isCorrect,
-              q.DT.id
-            );
-          })
-        );
-      })
-    );
-    // submit answers
+      }
+    }
+    toast.success("Create questions and answers succeed");
+    setQuestions(initQuestion);
   };
   const handlePreviewImage = (questionId) => {
     let questionsClone = _.cloneDeep(questions);
@@ -199,7 +261,7 @@ const ManageQuestions = (props) => {
                   <div className="form-floating description">
                     <input
                       type="text"
-                      className="form-control"
+                      className={`form-control`}
                       placeholder=""
                       value={question.description}
                       onChange={(e) =>
