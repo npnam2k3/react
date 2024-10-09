@@ -5,6 +5,7 @@ import { AiFillPlusCircle, AiFillMinusCircle } from "react-icons/ai";
 import { RiImageAddFill } from "react-icons/ri";
 import { v4 as uuidv4 } from "uuid";
 import _ from "lodash";
+import Lightbox from "react-awesome-lightbox";
 
 const ManageQuestions = (props) => {
   const options = [
@@ -28,6 +29,11 @@ const ManageQuestions = (props) => {
       ],
     },
   ]);
+  const [isPreviewImage, setIsPreviewImage] = useState(false);
+  const [dataPreviewImage, setDataPreviewImage] = useState({
+    title: "",
+    url: "",
+  });
 
   const handleAddRemoveQuestion = (type, questionId) => {
     if (type === "ADD") {
@@ -100,19 +106,36 @@ const ManageQuestions = (props) => {
     let questionsClone = _.cloneDeep(questions);
     let index = questionsClone.findIndex((item) => item.id === questionId);
     if (index > -1) {
-      questionsClone[index].answers = questionsClone[index].answers.map(answer => {
-          if(answer.id === answerId){
-            if(type === 'INPUT'){
-
-              answer.description = value
+      questionsClone[index].answers = questionsClone[index].answers.map(
+        (answer) => {
+          if (answer.id === answerId) {
+            if (type === "INPUT") {
+              answer.description = value;
             }
-            if(type === 'CHECKBOX'){
-              answer.isCorrect = value
+            if (type === "CHECKBOX") {
+              answer.isCorrect = value;
             }
           }
-          return answer
-      })
+          return answer;
+        }
+      );
       setQuestions(questionsClone);
+    }
+  };
+  const handleSubmitQuestionForQuiz = () => {
+    console.log("questions: ", questions);
+  };
+  const handlePreviewImage = (questionId) => {
+    let questionsClone = _.cloneDeep(questions);
+    let index = questionsClone.findIndex(
+      (question) => question.id === questionId
+    );
+    if (index > -1) {
+      setDataPreviewImage({
+        title: questionsClone[index].imageName,
+        url: URL.createObjectURL(questionsClone[index].imageFile),
+      });
+      setIsPreviewImage(true);
     }
   };
   return (
@@ -160,9 +183,16 @@ const ManageQuestions = (props) => {
                       }
                     />
                     <span>
-                      {question?.imageName
-                        ? question.imageName
-                        : "0 file is uploaded"}
+                      {question?.imageName ? (
+                        <span
+                          style={{ cursor: "pointer" }}
+                          onClick={() => handlePreviewImage(question.id)}
+                        >
+                          {question.imageName}
+                        </span>
+                      ) : (
+                        "0 file is uploaded"
+                      )}
                     </span>
                   </div>
                   <div className="btn-add">
@@ -243,13 +273,24 @@ const ManageQuestions = (props) => {
               </div>
             );
           })}
-          {
-            questions && questions.length>0 &&
-            <div>
-              <button className="btn btn-warning">Save Questions</button>
-            </div>
-          }
+        {questions && questions.length > 0 && (
+          <div>
+            <button
+              onClick={() => handleSubmitQuestionForQuiz()}
+              className="btn btn-warning"
+            >
+              Save Questions
+            </button>
+          </div>
+        )}
       </div>
+      {isPreviewImage && (
+        <Lightbox
+          onClose={() => setIsPreviewImage(false)}
+          image={dataPreviewImage.url}
+          title={dataPreviewImage.title}
+        ></Lightbox>
+      )}
     </div>
   );
 };
